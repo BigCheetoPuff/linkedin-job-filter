@@ -1,0 +1,88 @@
+{
+  "name": "Remote Product Engineer",
+  "isDefault": true,
+  "minScore": 75,
+  "customInstructions": "I am a software engineer with experience building enterprise web applications using Java, Spring Boot, Angular, React, PostgreSQL, and REST APIs. I prefer product-focused companies where engineers have ownership and influence over technical decisions. I enjoy designing systems, improving developer experience, modernizing legacy applications, and working on customer-facing features.\n\nI am looking for remote-first opportunities with strong engineering culture, reasonable work-life balance, and opportunities for growth. Roles involving backend development, platform engineering, developer tools, fintech, healthcare technology, or AI-enabled products are especially interesting.\n\nAvoid roles that are primarily consulting, staff augmentation, excessive meeting coordination, heavy travel, or production support. Favor companies where engineers spend most of their time building software rather than managing processes.",
+  "configValues": [
+    {
+      "fieldKey": "REQUIRED_SKILL",
+      "value": "java",
+      "label": "Java",
+      "weight": 1,
+      "isRequired": true
+    },
+    {
+      "fieldKey": "REQUIRED_SKILL",
+      "value": "spring",
+      "label": "Spring Boot",
+      "weight": 1,
+      "isRequired": true
+    },
+    {
+      "fieldKey": "PREFERRED_SKILL",
+      "value": "react",
+      "label": "React",
+      "weight": 0.75
+    },
+    {
+      "fieldKey": "PREFERRED_SKILL",
+      "value": "postgresql",
+      "label": "PostgreSQL",
+      "weight": 0.7
+    },
+    {
+      "fieldKey": "WORK_MODE",
+      "value": "remote",
+      "label": "Remote",
+      "weight": 1.0
+    },
+    {
+      "fieldKey": "WORK_MODE",
+      "value": "hybrid",
+      "label": "Hybrid",
+      "weight": 0.4
+    },
+    {
+      "fieldKey": "DOMAIN",
+      "value": "fintech",
+      "label": "FinTech",
+      "weight": 0.9
+    },
+    {
+      "fieldKey": "DOMAIN",
+      "value": "healthcare",
+      "label": "Healthcare Technology",
+      "weight": 0.75
+    },
+    {
+      "fieldKey": "CAREER_GOAL",
+      "value": "technical-growth",
+      "label": "Technical Growth",
+      "weight": 1.0
+    },
+    {
+      "fieldKey": "CAREER_GOAL",
+      "value": "ownership",
+      "label": "Ownership and Impact",
+      "weight": 0.9
+    },
+    {
+      "fieldKey": "GREEN_FLAG",
+      "value": "modern-tech-stack",
+      "label": "Modern Tech Stack",
+      "weight": 0.8
+    },
+    {
+      "fieldKey": "RED_FLAG",
+      "value": "consulting",
+      "label": "Consulting",
+      "weight": 1.0
+    },
+    {
+      "fieldKey": "CUSTOM_INSTRUCTIONS",
+      "value": "I would like to work at a firm that is not controlled by an Indian subculture and clique, where I can fit in with my American coworkers.",
+      "label": "Consulting",
+      "weight": 1.0
+    }
+  ]
+}

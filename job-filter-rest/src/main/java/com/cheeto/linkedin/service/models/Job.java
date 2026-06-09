@@ -1,10 +1,16 @@
-package com.cheeto.linkedin.domain.dao;
+package com.cheeto.linkedin.service.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Job {
     private Long id;
 

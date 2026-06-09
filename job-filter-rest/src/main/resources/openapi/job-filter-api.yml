@@ -38,7 +38,12 @@ paths:
       summary: Get search profiles
       tags: [ Search Profiles ]
       parameters:
-        - $ref: '#/components/parameters/UserId'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: Search profiles returned
@@ -52,26 +57,31 @@ paths:
       summary: Create search profile
       tags: [ Search Profiles ]
       parameters:
-        - $ref: '#/components/parameters/UserId'
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchProfileRequest'
+              $ref: '#/components/schemas/CreateSearchProfileRequest'
       responses:
         '201':
           description: Search profile created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchProfileResponse'
+                $ref: '#/components/schemas/CreateSearchProfileResponse'
         '400':
           description: Search profile creation failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchProfileResponse'
+                $ref: '#/components/schemas/CreateSearchProfileResponse'
 
   /api/users/{userId}/search-profiles/{searchProfileId}:
     get:
@@ -87,7 +97,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchProfileResponse'
+                $ref: '#/components/schemas/GetSearchProfileResponse'
 
     put:
       operationId: updateSearchProfile
@@ -101,14 +111,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchProfileRequest'
+              $ref: '#/components/schemas/UpdateSearchProfileRequest'
       responses:
         '200':
           description: Search profile updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchProfileResponse'
+                $ref: '#/components/schemas/UpdateSearchProfileResponse'
 
     delete:
       operationId: deleteSearchProfile
@@ -195,28 +205,60 @@ components:
         errors:
           $ref: '#/components/schemas/Errors'
 
-    CreateUserRequest:
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          type: string
-          format: email
-        displayName:
-          type: string
-
     CreateUserResponse:
       type: object
       required:
         - errors
       properties:
-        data:
-          $ref: '#/components/schemas/User'
+        id:
+          type: integer
+          format: int64
         errors:
           $ref: '#/components/schemas/Errors'
 
-    User:
+    UpdateSearchProfileResponse:
+      type: object
+      required:
+        - errors
+      properties:
+        id:
+          type: integer
+          format: int64
+        errors:
+          $ref: '#/components/schemas/Errors'
+
+    GetSearchProfileResponse:
+      type: object
+      required:
+        - errors
+      properties:
+        searchProfile:
+          $ref: '#/components/schemas/SearchProfileDTO'
+        errors:
+          $ref: '#/components/schemas/Errors'
+
+    GetSearchProfilesResponse:
+      type: object
+      required:
+        - errors
+      properties:
+        searchProfiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchProfileDTO'
+        errors:
+          $ref: '#/components/schemas/Errors'
+
+
+    CreateUserRequest:
+      type: object
+      required:
+        - user
+      properties:
+        user:
+          $ref: '#/components/schemas/UserDTO'
+
+    UserDTO:
       type: object
       required:
         - id
@@ -231,87 +273,70 @@ components:
         displayName:
           type: string
 
-    SearchProfileRequest:
+    CreateSearchProfileRequest:
       type: object
       required:
-        - name
+        - searchProfile
       properties:
+        searchProfile:
+          $ref: '#/components/schemas/SearchProfileDTO'
+
+
+    CreateSearchProfileResponse:
+      type: object
+      required:
+        - errors
+      properties:
+        id:
+          type: integer
+          format: int64
+        errors:
+          $ref: '#/components/schemas/Errors'
+
+    UpdateSearchProfileRequest:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
         name:
-          type: string
-        careerGoals:
-          type: string
-        companyCulturePreferences:
-          type: string
-        remoteWorkPreferences:
-          type: string
-        customInstructions:
           type: string
         isDefault:
           type: boolean
-        criteria:
+        minScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        idealJobDescription:
+          type: string
+        configValues:
           type: array
           items:
-            $ref: '#/components/schemas/SearchProfileCriterionRequest'
+            $ref: '#/components/schemas/SearchProfileExtendedFieldDTO'
 
-    SearchProfileCriterionRequest:
+    SearchProfileExtendedFieldDTO:
       type: object
       required:
-        - category
-        - preferenceType
+        - fieldKey
         - value
       properties:
-        category:
+        fieldKey:
           type: string
-          enum:
-            - TITLE
-            - TECHNOLOGY
-            - LOCATION
-            - INDUSTRY
-            - COMPANY_TYPE
-            - WORKPLACE_TYPE
-            - CULTURE
-            - STABILITY
-        preferenceType:
-          type: string
-          enum:
-            - TARGET
-            - PREFER
-            - AVOID
-            - REQUIRE
-            - EXCLUDE
+          example: REQUIRED_SKILL
         value:
           type: string
+          example: java
         weight:
-          type: integer
+          type: number
+          format: double
           minimum: 1
           maximum: 10
+        isRequired:
+          type: boolean
 
-    SearchProfileResponse:
-      type: object
-      required:
-        - errors
-      properties:
-        data:
-          $ref: '#/components/schemas/SearchProfile'
-        errors:
-          $ref: '#/components/schemas/Errors'
-
-    GetSearchProfilesResponse:
-      type: object
-      required:
-        - errors
-      properties:
-        data:
-          type: object
-          properties:
-            searchProfiles:
-              type: array
-              items:
-                $ref: '#/components/schemas/SearchProfile'
-        errors:
-          $ref: '#/components/schemas/Errors'
-
-    SearchProfile:
+    SearchProfileDTO:
       type: object
       properties:
         id:
@@ -322,35 +347,16 @@ components:
           format: int64
         name:
           type: string
-        careerGoals:
-          type: string
-        companyCulturePreferences:
-          type: string
-        remoteWorkPreferences:
-          type: string
-        customInstructions:
-          type: string
         isDefault:
           type: boolean
-        criteria:
+        minScore:
+          type: integer
+        customInstructions:
+          type: string
+        extendedValues:
           type: array
           items:
-            $ref: '#/components/schemas/SearchProfileCriterion'
-
-    SearchProfileCriterion:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        category:
-          type: string
-        preferenceType:
-          type: string
-        value:
-          type: string
-        weight:
-          type: integer
+            $ref: '#/components/schemas/SearchProfileExtendedFieldDTO'
 
     BasicJobScanRequest:
       type: object
@@ -397,14 +403,17 @@ components:
         - errors
       properties:
         data:
-          type: object
-          properties:
-            results:
-              type: array
-              items:
-                $ref: '#/components/schemas/JobRating'
+          $ref: '#/components/schemas/BasicJobScanData'
         errors:
           $ref: '#/components/schemas/Errors'
+
+    BasicJobScanData:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobRating'
 
     JobRating:
       type: object
