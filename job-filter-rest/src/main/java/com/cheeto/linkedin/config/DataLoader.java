@@ -30,11 +30,14 @@ public class DataLoader {
     private final String TEST_EMAIL = "keaton@example.com";
 
     @jakarta.annotation.Resource
-    private ResourceLoader resourceLoader;
+    private final ResourceLoader resourceLoader;
+    private final LocalDBResetService localDBResetService;
 
     @EventListener(ApplicationReadyEvent.class)
     public void load() throws Exception {
 
+        log.info("Resetting local dev database...");
+        localDBResetService.reset();
 
         if (userService.getUserByEmail(TEST_EMAIL).isEmpty()) {
             Resource userResource =
@@ -60,7 +63,7 @@ public class DataLoader {
 
 
             seededSearchProfile.setUserId(seededUser.getId());
-            
+
             searchProfileService.createSearchProfile(
                     seededSearchProfile);
 

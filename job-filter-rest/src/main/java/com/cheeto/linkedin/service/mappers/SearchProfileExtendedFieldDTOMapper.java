@@ -4,10 +4,8 @@ import com.cheeto.jobfilter.model.SearchProfileExtendedFieldDTO;
 import com.cheeto.linkedin.service.models.SearchProfileExtendedFieldDB;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-
 @Component
-public class SearchProfileExtendedValueDTOMapper {
+public class SearchProfileExtendedFieldDTOMapper {
 
     public static SearchProfileExtendedFieldDB toDao(Long searchProfileId, SearchProfileExtendedFieldDTO dto) {
         return SearchProfileExtendedFieldDB.builder()

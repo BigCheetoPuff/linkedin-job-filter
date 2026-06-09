@@ -10,7 +10,7 @@
         "https://www.linkedin.com/*"
     ],
     "action": {
-        "default_popup": "popup/popup.html"
+        "default_popup": "index.html"
     },
     "content_scripts": [
         {

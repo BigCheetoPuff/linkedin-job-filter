@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,5 +20,7 @@ public class SearchProfileDB {
     private Boolean isDefault;
     private Integer minScore;
     private String customInstructions;
-    private List<SearchProfileExtendedFieldDB> extendedValues = new ArrayList<>();
+    private List<SearchProfileExtendedFieldDB> extendedFields = new ArrayList<>();
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

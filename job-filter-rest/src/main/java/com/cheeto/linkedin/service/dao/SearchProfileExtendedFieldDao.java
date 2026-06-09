@@ -9,7 +9,8 @@ import java.util.List;
 public interface SearchProfileExtendedFieldDao {
 
     @Insert("""
-            INSERT INTO search_profile_config_values (
+            <script>
+            INSERT INTO search_profile_extended_flds (
                 search_profile_id,
                 field_key,
                 value,
@@ -17,17 +18,21 @@ public interface SearchProfileExtendedFieldDao {
                 weight,
                 is_required
             )
-            VALUES (
-                #{searchProfileId},
-                #{fieldKey},
-                #{value},
-                #{label},
-                #{weight},
-                #{isRequired}
+            VALUES 
+            <foreach collection="extendedFields" item="extendedField" separator=",">
+            (
+                #{extendedField.searchProfileId},
+                #{extendedField.fieldKey},
+                #{extendedField.value},
+                #{extendedField.label},
+                #{extendedField.weight},
+                #{extendedField.isRequired}
             )
+            </foreach>
+            </script>
             """)
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    int insert(SearchProfileExtendedFieldDB configValue);
+    int insertAll(@Param("extendedFields") List<SearchProfileExtendedFieldDB> extendedFields);
 
     @Select("""
             SELECT
@@ -40,14 +45,14 @@ public interface SearchProfileExtendedFieldDao {
                 is_required AS isRequired,
                 created_at AS createdAt,
                 updated_at AS updatedAt
-            FROM search_profile_config_values
+            FROM search_profile_extended_flds
             WHERE search_profile_id = #{searchProfileId}
             ORDER BY field_key, id
             """)
     List<SearchProfileExtendedFieldDB> findBySearchProfileId(Long searchProfileId);
 
     @Delete("""
-            DELETE FROM search_profile_config_values
+            DELETE FROM search_profile_extended_flds
             WHERE search_profile_id = #{searchProfileId}
             """)
     int deleteBySearchProfileId(Long searchProfileId);

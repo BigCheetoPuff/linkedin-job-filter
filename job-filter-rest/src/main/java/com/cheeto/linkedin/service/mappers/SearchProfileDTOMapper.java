@@ -16,13 +16,13 @@ public class SearchProfileDTOMapper {
                 .isDefault(searchProfileDTO.getIsDefault())
                 .minScore(searchProfileDTO.getMinScore())
                 .customInstructions(searchProfileDTO.getCustomInstructions())
-                .extendedValues(
-                        searchProfileDTO.getExtendedValues()
+                .extendedFields(
+                        searchProfileDTO.getExtendedFields()
                                 .stream()
-                                .map((SearchProfileExtendedFieldDTO extendedValue) ->
-                                        SearchProfileExtendedValueDTOMapper.toDao(
+                                .map((SearchProfileExtendedFieldDTO extendedFieldDTO) ->
+                                        SearchProfileExtendedFieldDTOMapper.toDao(
                                                 searchProfileDTO.getId(),
-                                                extendedValue
+                                                extendedFieldDTO
                                         ))
                                 .toList()
                 )
@@ -36,10 +36,10 @@ public class SearchProfileDTOMapper {
                 .isDefault(dao.getIsDefault())
                 .minScore(dao.getMinScore())
                 .customInstructions(dao.getCustomInstructions())
-                .extendedValues(
-                        dao.getExtendedValues()
+                .extendedFields(
+                        dao.getExtendedFields()
                                 .stream()
-                                .map(SearchProfileExtendedValueDTOMapper::toDto)
+                                .map(SearchProfileExtendedFieldDTOMapper::toDto)
                                 .toList()
                 )
                 .build();

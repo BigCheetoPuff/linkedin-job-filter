@@ -353,7 +353,7 @@ components:
           type: integer
         customInstructions:
           type: string
-        extendedValues:
+        extendedFields:
           type: array
           items:
             $ref: '#/components/schemas/SearchProfileExtendedFieldDTO'

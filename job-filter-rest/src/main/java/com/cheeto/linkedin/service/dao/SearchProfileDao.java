@@ -51,9 +51,9 @@ public interface SearchProfileDao {
             @Result(property = "createdAt", column = "createdAt"),
             @Result(property = "updatedAt", column = "updatedAt"),
             @Result(
-                    property = "extendedValues",
+                    property = "extendedFields",
                     column = "id",
-                    many = @Many(select = "com.cheeto.linkedin.dao.mappers.SearchProfileExtendedFieldDao.findBySearchProfileId")
+                    many = @Many(select = "com.cheeto.linkedin.service.dao.SearchProfileExtendedFieldDao.findBySearchProfileId")
             )
     })
     Optional<SearchProfileDB> findById(Long id);

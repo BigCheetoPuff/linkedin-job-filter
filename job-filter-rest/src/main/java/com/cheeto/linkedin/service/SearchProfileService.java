@@ -1,8 +1,10 @@
 package com.cheeto.linkedin.service;
 
 import com.cheeto.linkedin.service.dao.SearchProfileDao;
+import com.cheeto.linkedin.service.dao.SearchProfileExtendedFieldDao;
 import com.cheeto.linkedin.service.mappers.MapperUtils;
 import com.cheeto.linkedin.service.models.SearchProfileDB;
+import com.cheeto.linkedin.service.models.SearchProfileExtendedFieldDB;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 public class SearchProfileService {
 
     private final SearchProfileDao searchProfileDao;
+    private final SearchProfileExtendedFieldDao searchProfileExtendedFieldDao;
 
     public SearchProfileDB getSearchProfileById(Long searchProfileId) {
         return searchProfileDao.findById(searchProfileId).orElseThrow(() -> new ResponseStatusException(
@@ -28,6 +31,15 @@ public class SearchProfileService {
 
     public Long createSearchProfile(SearchProfileDB searchProfile) {
         MapperUtils.assertUpdatedSingleRow(searchProfileDao.insert(searchProfile));
-        return searchProfile.getId();
+        Long searchProfileId = searchProfile.getId();
+
+        if (searchProfileId != null) {
+            searchProfile.getExtendedFields()
+                    .forEach((SearchProfileExtendedFieldDB dao) -> dao.setSearchProfileId(searchProfileId));
+            
+            searchProfileExtendedFieldDao.insertAll(searchProfile.getExtendedFields());
+        }
+
+        return searchProfileId;
     }
 }

@@ -78,6 +78,7 @@ CREATE TABLE job_ratings (
                              concerns_json TEXT,
 
                              created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                             updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
                              CONSTRAINT fk_job_ratings_user
                                  FOREIGN KEY (user_id)
@@ -108,27 +109,28 @@ CREATE TABLE sys_lov (
                          sort_order INTEGER DEFAULT 0,
                          is_active INTEGER DEFAULT 1,
 
+                         created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
                          UNIQUE (lov_name, lov_value)
 );
 
-CREATE TABLE search_profile_extended_fields (
+CREATE TABLE search_profile_extended_flds (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         search_profile_id INTEGER NOT NULL,
 
-                        field_name TEXT NOT NULL,
-                        lov_name TEXT,
-                        lov_value TEXT,
-                        freeform_value TEXT,
-
+                        field_key TEXT NOT NULL,
+                        value TEXT,
+                        label VARCHAR(50),
                         weight INTEGER,
                         is_required INTEGER DEFAULT 0,
 
+                        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
                         FOREIGN KEY (search_profile_id)
                             REFERENCES search_profiles(id)
-                            ON DELETE CASCADE,
-
-                        FOREIGN KEY (lov_name, lov_value)
-                            REFERENCES sys_lov(lov_name, lov_value)
+                            ON DELETE CASCADE
 );
 
 CREATE INDEX idx_jobs_company
@@ -140,8 +142,8 @@ CREATE INDEX idx_jobs_title
 CREATE INDEX idx_search_profiles_user_id
     ON search_profiles(user_id);
 
-CREATE INDEX idx_search_profile_extended_fields_search_profile_id
-    ON search_profile_extended_fields(search_profile_id);
+CREATE INDEX idx_search_profile_extended_flds_search_profile_id
+    ON search_profile_extended_flds(search_profile_id);
 
 CREATE INDEX idx_job_ratings_user_id
     ON job_ratings(user_id);
